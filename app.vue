@@ -6,5 +6,5 @@
 
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig();
-console.log(runtimeConfig.);
+console.log(runtimeConfig.aaa);
 </script>
