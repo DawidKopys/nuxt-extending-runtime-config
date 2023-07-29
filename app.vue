@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig();
-console.log(runtimeConfig.aaa);
+import { useRuntimeConfig } from "#imports"
+
+const runtimeConfig = useRuntimeConfig()
+console.log(runtimeConfig.public.apiBaseButItWorks)
 </script>
