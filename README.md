@@ -1,63 +1,58 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Nuxt 3 - manually typing runtime config
 
 ## Setup
 
-Make sure to install the dependencies:
+```
+# install
+npm i
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
+# run type tests
+npm run typecheck
 ```
 
-## Development Server
+The test will fail with result:
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
+```
+ FAIL  tests/runtime-config.test-d.ts > runtime configuration can be extended
+TypeCheckError: Argument of type 'unknown' is not assignable to parameter of type 'string'.
+ ❯ tests/runtime-config.test-d.ts:9:22
+      7|   assertType<string>(config.apiSecret)
+      8|   assertType<string>(config.public.apiBaseButItWorks)
+      9|   assertType<string>(config.public.apiBase)
+       |                      ^
+     10| })
+     11|
 ```
 
-## Production
+## Context
 
-Build the application for production:
+According to [Nuxt 3 docs](https://nuxt.com/docs/guide/going-further/runtime-config#manually-typing-runtime-config), runtime config can be typed manually as below:
 
-```bash
-# npm
-npm run build
+```
+declare module 'nuxt/schema' {
+  interface RuntimeConfig {
+    apiSecret: string
+    public: {
+      apiBase: string
+    }
+  }
+}
 
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
+export {}
 ```
 
-Locally preview production build:
+... but the "public" part doesn't work. It appears that the correct way to do it would be:
+```
+declare module 'nuxt/schema' {
+  interface RuntimeConfig {
+    apiSecret: string
+  }
+  interface PublicRuntimeConfig {
+    apiBase: string
+  }
+}
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
+export {}
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
